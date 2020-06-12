@@ -16,11 +16,48 @@ declare const _default: {
     unloadForSound(element: HTMLMediaElement): Promise<AVPlaybackStatus>;
     setStatusForSound(element: HTMLMediaElement, status: AVPlaybackStatusToSet): Promise<AVPlaybackStatus>;
     replaySound(element: HTMLMediaElement, status: AVPlaybackStatusToSet): Promise<AVPlaybackStatus>;
-    getAudioRecordingStatus(): Promise<void>;
-    prepareAudioRecorder(): Promise<void>;
-    startAudioRecording(): Promise<void>;
-    pauseAudioRecording(): Promise<void>;
-    stopAudioRecording(): Promise<void>;
-    unloadAudioRecorder(): Promise<void>;
+    getAudioRecordingStatus(): Promise<{
+        isRecording: boolean;
+        isDoneRecording: boolean;
+        durationMillis: number;
+    }>;
+    prepareAudioRecorder(options: any): Promise<{
+        uri: string;
+        status: {
+            isRecording: boolean;
+            isDoneRecording: boolean;
+            durationMillis: number;
+        };
+    }>;
+    startAudioRecording(): Promise<{
+        isRecording: boolean;
+        isDoneRecording: boolean;
+        durationMillis: number;
+    }>;
+    pauseAudioRecording(): Promise<{
+        isRecording: boolean;
+        isDoneRecording: boolean;
+        durationMillis: number;
+    }>;
+    stopAudioRecording(): Promise<{
+        uri: null;
+        status: Promise<{
+            isRecording: boolean;
+            isDoneRecording: boolean;
+            durationMillis: number;
+        }>;
+    } | {
+        uri: string;
+        status: {
+            isRecording: boolean;
+            isDoneRecording: boolean;
+            durationMillis: number;
+        };
+    }>;
+    unloadAudioRecorder(): Promise<{
+        isRecording: boolean;
+        isDoneRecording: boolean;
+        durationMillis: number;
+    }>;
 };
 export default _default;

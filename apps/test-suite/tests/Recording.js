@@ -75,8 +75,10 @@ export async function test(t) {
     let recordingObject = null;
 
     t.beforeEach(async () => {
-      const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
-      t.expect(status).toEqual('granted');
+      if (Platform.OS !== 'web') {
+        const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
+        t.expect(status).toEqual('granted');
+      }
       recordingObject = new Audio.Recording();
     });
 
@@ -329,8 +331,11 @@ export async function test(t) {
               const { sound } = await recordingObject.createNewLoadedSound();
               await retryForStatus(sound, { isBuffering: false });
               const status = await sound.getStatusAsync();
-              // Android is slow and we have to take it into account when checking recording duration.
-              t.expect(status.durationMillis).toBeGreaterThan(recordingDuration * (7 / 10));
+              // Web doesn't return durations in Chrome - https://bugs.chromium.org/p/chromium/issues/detail?id=642012
+              if (Platform.OS !== 'web') {
+                // Android is slow and we have to take it into account when checking recording duration.
+                t.expect(status.durationMillis).toBeGreaterThan(recordingDuration * (7 / 10));
+              }
               t.expect(sound).toBeDefined();
             } catch (err) {
               error = err;
@@ -418,8 +423,12 @@ export async function test(t) {
               const { sound } = await recordingObject.createNewLoadedSoundAsync();
               await retryForStatus(sound, { isBuffering: false });
               const status = await sound.getStatusAsync();
-              // Android is slow and we have to take it into account when checking recording duration.
-              t.expect(status.durationMillis).toBeGreaterThan(recordingDuration * (6 / 10));
+
+              // Web doesn't return durations in Chrome - https://bugs.chromium.org/p/chromium/issues/detail?id=642012
+              if (Platform.OS !== 'web') {
+                // Android is slow and we have to take it into account when checking recording duration.
+                t.expect(status.durationMillis).toBeGreaterThan(recordingDuration * (6 / 10));
+              }
               t.expect(sound).toBeDefined();
             } catch (err) {
               error = err;

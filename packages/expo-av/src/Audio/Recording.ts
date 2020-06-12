@@ -33,6 +33,10 @@ export type RecordingOptions = {
     linearPCMIsBigEndian?: boolean;
     linearPCMIsFloat?: boolean;
   };
+  web: {
+    mimeType?: string;
+    bitsPerSecond?: number;
+  };
 };
 
 // TODO: consider changing these to enums
@@ -121,6 +125,10 @@ export const RECORDING_OPTIONS_PRESET_HIGH_QUALITY: RecordingOptions = {
     linearPCMIsBigEndian: false,
     linearPCMIsFloat: false,
   },
+  web: {
+    mimeType: 'audio/webm',
+    bitsPerSecond: 12800,
+  },
 };
 
 export const RECORDING_OPTIONS_PRESET_LOW_QUALITY: RecordingOptions = {
@@ -141,6 +149,10 @@ export const RECORDING_OPTIONS_PRESET_LOW_QUALITY: RecordingOptions = {
     linearPCMBitDepth: 16,
     linearPCMIsBigEndian: false,
     linearPCMIsFloat: false,
+  },
+  web: {
+    mimeType: 'audio/webm',
+    bitsPerSecond: 12800,
   },
 };
 
@@ -359,6 +371,12 @@ export class Recording {
       stopResult = await ExponentAV.stopAudioRecording();
     } catch (err) {
       stopError = err;
+    }
+
+    // Web has to return the URI at the end of recording, so needs a little destructuring
+    if (Platform.OS === 'web') {
+      this._uri = stopResult?.uri;
+      stopResult = stopResult?.status;
     }
 
     // Clean-up and return status
