@@ -75,10 +75,8 @@ export async function test(t) {
     let recordingObject = null;
 
     t.beforeEach(async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
-        t.expect(status).toEqual('granted');
-      }
+      const { status } = await Permissions.getAsync(Permissions.AUDIO_RECORDING);
+      t.expect(status).toEqual('granted');
       recordingObject = new Audio.Recording();
     });
 
