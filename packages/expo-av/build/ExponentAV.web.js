@@ -71,7 +71,7 @@ function setStatusForMedia(media, status) {
     }
     return getStatusFromMedia(media);
 }
-let _mediaRecorder = null;
+let mediaRecorder = null;
 export default {
     get name() {
         return 'ExponentAV';
@@ -131,7 +131,7 @@ export default {
     //   async setUnloadedCallbackForAndroidRecording() {},
     async getAudioRecordingStatus() {
         return {
-            isRecording: _mediaRecorder && _mediaRecorder.state === 'recording',
+            isRecording: mediaRecorder && mediaRecorder.state === 'recording',
             isDoneRecording: false,
             durationMillis: 2000,
         };
@@ -141,44 +141,44 @@ export default {
             throw new Error('No media devices available');
         }
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        _mediaRecorder = new window.MediaRecorder(stream, options?.web || RECORDING_OPTIONS_PRESET_HIGH_QUALITY.web);
+        mediaRecorder = new window.MediaRecorder(stream, options?.web || RECORDING_OPTIONS_PRESET_HIGH_QUALITY.web);
         return { uri: 'file:///unsupported', status: await this.getAudioRecordingStatus() };
     },
     async startAudioRecording() {
-        if (_mediaRecorder === null) {
+        if (mediaRecorder === null) {
             throw new Error('No recorder prepared');
         }
-        if (_mediaRecorder.state === 'paused') {
-            _mediaRecorder.resume();
+        if (mediaRecorder.state === 'paused') {
+            mediaRecorder.resume();
         }
         else {
-            _mediaRecorder.start();
+            mediaRecorder.start();
         }
         return this.getAudioRecordingStatus();
     },
     async pauseAudioRecording() {
-        if (_mediaRecorder === null) {
+        if (mediaRecorder === null) {
             throw new Error('No recorder prepared');
         }
         // Set status to paused
-        _mediaRecorder.pause();
+        mediaRecorder.pause();
         return this.getAudioRecordingStatus();
     },
     async stopAudioRecording() {
-        if (_mediaRecorder === null) {
+        if (mediaRecorder === null) {
             throw new Error('No recorder prepared');
         }
-        if (_mediaRecorder.state === 'inactive') {
+        if (mediaRecorder.state === 'inactive') {
             return { uri: null, status: this.getAudioRecordingStatus() };
         }
-        const dataPromise = new Promise(resolve => (_mediaRecorder.ondataavailable = e => resolve(e.data)));
-        await _mediaRecorder.stop();
+        const dataPromise = new Promise(resolve => (mediaRecorder.ondataavailable = e => resolve(e.data)));
+        await mediaRecorder.stop();
         const data = await dataPromise;
         const url = URL.createObjectURL(data);
         return { uri: url, status: await this.getAudioRecordingStatus() };
     },
     async unloadAudioRecorder() {
-        _mediaRecorder = null;
+        mediaRecorder = null;
         return this.getAudioRecordingStatus();
     },
 };
