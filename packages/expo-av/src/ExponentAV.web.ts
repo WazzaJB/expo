@@ -176,7 +176,7 @@ export default {
     };
   },
   async prepareAudioRecorder(options) {
-    if (!navigator.mediaDevices) {
+    if (typeof navigator !== 'undefined' && !navigator.mediaDevices) {
       throw new Error('No media devices available');
     }
 
