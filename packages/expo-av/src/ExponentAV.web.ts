@@ -170,7 +170,7 @@ export default {
   //   async setUnloadedCallbackForAndroidRecording() {},
   async getAudioRecordingStatus() {
     return {
-      isRecording: mediaRecorder && mediaRecorder.state === 'recording',
+      isRecording: mediaRecorder?.state === 'recording',
       isDoneRecording: false,
       durationMillis: 2000,
     };
