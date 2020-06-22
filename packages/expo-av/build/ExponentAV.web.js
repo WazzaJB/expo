@@ -146,7 +146,7 @@ export default {
     },
     async startAudioRecording() {
         if (mediaRecorder === null) {
-            throw new Error('No recorder prepared');
+            throw new Error('Cannot start an audio recording without initializing a MediaRecorder. Run prepareToRecordAsync() before attempting to start an audio recording.');
         }
         if (mediaRecorder.state === 'paused') {
             mediaRecorder.resume();
@@ -158,7 +158,7 @@ export default {
     },
     async pauseAudioRecording() {
         if (mediaRecorder === null) {
-            throw new Error('No recorder prepared');
+            throw new Error('Cannot start an audio recording without initializing a MediaRecorder. Run prepareToRecordAsync() before attempting to start an audio recording.');
         }
         // Set status to paused
         mediaRecorder.pause();
@@ -166,7 +166,7 @@ export default {
     },
     async stopAudioRecording() {
         if (mediaRecorder === null) {
-            throw new Error('No recorder prepared');
+            throw new Error('Cannot start an audio recording without initializing a MediaRecorder. Run prepareToRecordAsync() before attempting to start an audio recording.');
         }
         if (mediaRecorder.state === 'inactive') {
             return { uri: null, status: this.getAudioRecordingStatus() };
