@@ -187,7 +187,7 @@ export default {
       options?.web || RECORDING_OPTIONS_PRESET_HIGH_QUALITY.web
     );
 
-    return { uri: 'file:///unsupported', status: await this.getAudioRecordingStatus() };
+    return { uri: null, status: await this.getAudioRecordingStatus() };
   },
   async startAudioRecording() {
     if (mediaRecorder === null) {

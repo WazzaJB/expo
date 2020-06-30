@@ -22,7 +22,7 @@ declare const _default: {
         durationMillis: number;
     }>;
     prepareAudioRecorder(options: any): Promise<{
-        uri: string;
+        uri: null;
         status: {
             isRecording: boolean;
             isDoneRecording: boolean;

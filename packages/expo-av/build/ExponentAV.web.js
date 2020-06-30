@@ -131,18 +131,18 @@ export default {
     //   async setUnloadedCallbackForAndroidRecording() {},
     async getAudioRecordingStatus() {
         return {
-            isRecording: mediaRecorder && mediaRecorder.state === 'recording',
+            isRecording: mediaRecorder?.state === 'recording',
             isDoneRecording: false,
             durationMillis: 2000,
         };
     },
     async prepareAudioRecorder(options) {
-        if (!navigator.mediaDevices) {
+        if (typeof navigator !== 'undefined' && !navigator.mediaDevices) {
             throw new Error('No media devices available');
         }
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new window.MediaRecorder(stream, options?.web || RECORDING_OPTIONS_PRESET_HIGH_QUALITY.web);
-        return { uri: 'file:///unsupported', status: await this.getAudioRecordingStatus() };
+        return { uri: null, status: await this.getAudioRecordingStatus() };
     },
     async startAudioRecording() {
         if (mediaRecorder === null) {

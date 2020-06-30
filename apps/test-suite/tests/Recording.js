@@ -255,7 +255,12 @@ export async function test(t) {
         await recordingObject.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY);
         await recordingObject.startAsync();
         await waitFor(defaultRecordingDurationMillis);
-        t.expect(recordingObject.getURI()).toContain('file:///');
+        if (Platform.OS === 'web') {
+          // On web, URI is not available until completion
+          t.expect(recordingObject.getURI()).toEqual(null);
+        } else {
+          t.expect(recordingObject.getURI()).toContain('file:///');
+        }
         await recordingObject.stopAndUnloadAsync();
       });
     });
