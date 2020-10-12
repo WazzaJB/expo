@@ -85,6 +85,17 @@ function setStatusForMedia(
 }
 
 let mediaRecorder: null | any /*MediaRecorder*/ = null;
+let mediaRecorderUptimeOfLastStartResume: number = 0;
+let mediaRecorderDurationAlreadyRecorded: number = 0;
+let mediaRecorderIsRecording: boolean = false;
+
+function getAudioRecorderDurationMillis() {
+  let duration = mediaRecorderDurationAlreadyRecorded;
+  if (mediaRecorderIsRecording && mediaRecorderUptimeOfLastStartResume > 0) {
+    duration += Date.now() - mediaRecorderUptimeOfLastStartResume;
+  }
+  return duration;
+}
 
 export default {
   get name(): string {
@@ -169,9 +180,9 @@ export default {
   //   async setUnloadedCallbackForAndroidRecording() {},
   async getAudioRecordingStatus() {
     return {
+      canRecord: mediaRecorder?.state === 'recording' || mediaRecorder?.state === 'inactive',
       isRecording: mediaRecorder?.state === 'recording',
-      isDoneRecording: false,
-      durationMillis: 2000,
+      durationMillis: getAudioRecorderDurationMillis(),
     };
   },
   async prepareAudioRecorder(options) {
@@ -179,12 +190,36 @@ export default {
       throw new Error('No media devices available');
     }
 
+    mediaRecorderUptimeOfLastStartResume = 0;
+    mediaRecorderDurationAlreadyRecorded = 0;
+
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
     mediaRecorder = new (window as any).MediaRecorder(
       stream,
       options?.web || RECORDING_OPTIONS_PRESET_HIGH_QUALITY.web
     );
+
+    mediaRecorder.onpause = () => {
+      mediaRecorderDurationAlreadyRecorded = getAudioRecorderDurationMillis();
+      mediaRecorderIsRecording = false;
+    };
+
+    mediaRecorder.onresume = () => {
+      mediaRecorderUptimeOfLastStartResume = Date.now();
+      mediaRecorderIsRecording = true;
+    };
+
+    mediaRecorder.onstart = () => {
+      mediaRecorderUptimeOfLastStartResume = Date.now();
+      mediaRecorderDurationAlreadyRecorded = 0;
+      mediaRecorderIsRecording = true;
+    };
+
+    mediaRecorder.onstop = () => {
+      mediaRecorderDurationAlreadyRecorded = getAudioRecorderDurationMillis();
+      mediaRecorderIsRecording = false;
+    };
 
     return { uri: null, status: await this.getAudioRecordingStatus() };
   },
