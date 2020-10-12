@@ -1,7 +1,6 @@
 import { SyntheticPlatformEmitter } from '@unimodules/core';
 
 import { AVPlaybackNativeSource, AVPlaybackStatus, AVPlaybackStatusToSet } from './AV';
-
 import { RECORDING_OPTIONS_PRESET_HIGH_QUALITY } from './Audio/Recording';
 
 function getStatusFromMedia(media?: HTMLMediaElement): AVPlaybackStatus {
