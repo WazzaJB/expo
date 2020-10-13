@@ -1,4 +1,10 @@
+import { PermissionResponse } from 'unimodules-permissions-interface';
 import { AVPlaybackNativeSource, AVPlaybackStatus, AVPlaybackStatusToSet } from './AV';
+/**
+ * Gets the permission details. The implementation is not very good as it actually requests
+ * access to the microhpone, not all browsers support the experimental permissions api
+ */
+declare function getPermissionsAsync(): Promise<PermissionResponse>;
 declare const _default: {
     readonly name: string;
     getStatusForVideo(element: HTMLMediaElement): Promise<AVPlaybackStatus>;
@@ -59,5 +65,7 @@ declare const _default: {
         isRecording: boolean;
         durationMillis: number;
     }>;
+    getPermissionsAsync: typeof getPermissionsAsync;
+    requestPermissionsAsync(): Promise<PermissionResponse>;
 };
 export default _default;
