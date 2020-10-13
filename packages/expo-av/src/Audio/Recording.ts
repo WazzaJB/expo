@@ -127,7 +127,7 @@ export const RECORDING_OPTIONS_PRESET_HIGH_QUALITY: RecordingOptions = {
   },
   web: {
     mimeType: 'audio/webm',
-    bitsPerSecond: 12800,
+    bitsPerSecond: 128000,
   },
 };
 
@@ -152,7 +152,7 @@ export const RECORDING_OPTIONS_PRESET_LOW_QUALITY: RecordingOptions = {
   },
   web: {
     mimeType: 'audio/webm',
-    bitsPerSecond: 12800,
+    bitsPerSecond: 128000,
   },
 };
 
