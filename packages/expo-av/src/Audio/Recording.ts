@@ -375,8 +375,13 @@ export class Recording {
 
     // Web has to return the URI at the end of recording, so needs a little destructuring
     if (Platform.OS === 'web') {
-      this._uri = stopResult?.uri;
-      stopResult = stopResult?.status;
+      const { uri, status } = (stopResult as unknown) as {
+        uri: string | null;
+        status: RecordingStatus;
+      };
+
+      this._uri = uri;
+      stopResult = status;
     }
 
     // Clean-up and return status
