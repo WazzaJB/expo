@@ -228,7 +228,6 @@ export default {
     },
     async unloadAudioRecorder() {
         mediaRecorder = null;
-        return this.getAudioRecordingStatus();
     },
     getPermissionsAsync,
     async requestPermissionsAsync() {

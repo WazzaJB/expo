@@ -60,11 +60,7 @@ declare const _default: {
             durationMillis: number;
         };
     }>;
-    unloadAudioRecorder(): Promise<{
-        canRecord: boolean;
-        isRecording: boolean;
-        durationMillis: number;
-    }>;
+    unloadAudioRecorder(): Promise<void>;
     getPermissionsAsync: typeof getPermissionsAsync;
     requestPermissionsAsync(): Promise<PermissionResponse>;
 };
