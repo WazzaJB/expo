@@ -218,7 +218,7 @@ export default {
             throw new Error('Cannot start an audio recording without initializing a MediaRecorder. Run prepareToRecordAsync() before attempting to start an audio recording.');
         }
         if (mediaRecorder.state === 'inactive') {
-            return { uri: null, status: this.getAudioRecordingStatus() };
+            return { uri: null, status: await this.getAudioRecordingStatus() };
         }
         const dataPromise = new Promise(resolve => (mediaRecorder.ondataavailable = e => resolve(e.data)));
         await mediaRecorder.stop();

@@ -279,7 +279,7 @@ export default {
     }
 
     if (mediaRecorder.state === 'inactive') {
-      return { uri: null, status: this.getAudioRecordingStatus() };
+      return { uri: null, status: await this.getAudioRecordingStatus() };
     }
 
     const dataPromise = new Promise(

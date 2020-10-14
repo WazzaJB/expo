@@ -47,11 +47,11 @@ declare const _default: {
     }>;
     stopAudioRecording(): Promise<{
         uri: null;
-        status: Promise<{
+        status: {
             canRecord: boolean;
             isRecording: boolean;
             durationMillis: number;
-        }>;
+        };
     } | {
         uri: string;
         status: {
