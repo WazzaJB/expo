@@ -286,7 +286,7 @@ export default {
       resolve => (mediaRecorder.ondataavailable = e => resolve(e.data))
     );
 
-    await mediaRecorder.stop();
+    mediaRecorder.stop();
 
     const data = await dataPromise;
     const url = URL.createObjectURL(data);

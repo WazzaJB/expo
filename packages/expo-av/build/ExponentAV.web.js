@@ -221,7 +221,7 @@ export default {
             return { uri: null, status: await this.getAudioRecordingStatus() };
         }
         const dataPromise = new Promise(resolve => (mediaRecorder.ondataavailable = e => resolve(e.data)));
-        await mediaRecorder.stop();
+        mediaRecorder.stop();
         const data = await dataPromise;
         const url = URL.createObjectURL(data);
         return { uri: url, status: await this.getAudioRecordingStatus() };
