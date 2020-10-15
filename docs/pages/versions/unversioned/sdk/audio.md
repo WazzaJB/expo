@@ -234,7 +234,7 @@ The rest of the API for `Audio.Sound` is the same as the imperative playback API
 
 > **Notes on web usage:**
 >
-> - A MediaRecorder issue on Chrome prevents durations from working. [See the open Chromium issue](https://bugs.chromium.org/p/chromium/issues/detail?id=642012)
+> - A MediaRecorder issue on Chrome produces WebM files missing the duration metadata. [See the open Chromium issue](https://bugs.chromium.org/p/chromium/issues/detail?id=642012)
 > - MediaRecorder encoding options and other configurations are inconsistent across browsers, utilising a Polyfill such as [kbumsik/opus-media-recorder](https://github.com/kbumsik/opus-media-recorder) or [ai/audio-recorder-polyfill](https://github.com/ai/audio-recorder-polyfill) in your application will improve your experience. Any options passed to `prepareToRecordAsync` will be passed directly to the MediaRecorder API and as such the polyfill.
 
 ### `Audio.Recording`
@@ -277,13 +277,13 @@ try {
 
   - `canRecord` : a boolean set to `true`.
   - `isRecording` : a boolean describing if the `Recording` is currently recording.
-  - `durationMillis` : the current duration of the recorded audio (Android & iOS only).
+  - `durationMillis` : the current duration of the recorded audio.
 
   After `stopAndUnloadAsync()` is called, the `status` will be as follows:
 
   - `canRecord` : a boolean set to `false`.
   - `isDoneRecording` : a boolean set to `true`.
-  - `durationMillis` : the final duration of the recorded audio (Android & iOS only).
+  - `durationMillis` : the final duration of the recorded audio.
 
 - `recordingInstance.setOnRecordingStatusUpdate(onRecordingStatusUpdate)`
 
