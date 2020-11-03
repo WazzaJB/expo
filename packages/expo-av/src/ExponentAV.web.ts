@@ -221,29 +221,29 @@ export default {
       options?.web || RECORDING_OPTIONS_PRESET_HIGH_QUALITY.web
     );
 
-    mediaRecorder.onpause = () => {
+    mediaRecorder.addEventListener('pause', () => {
       mediaRecorderDurationAlreadyRecorded = getAudioRecorderDurationMillis();
       mediaRecorderIsRecording = false;
-    };
+    });
 
-    mediaRecorder.onresume = () => {
+    mediaRecorder.addEventListener('resume', () => {
       mediaRecorderUptimeOfLastStartResume = Date.now();
       mediaRecorderIsRecording = true;
-    };
+    });
 
-    mediaRecorder.onstart = () => {
+    mediaRecorder.addEventListener('start', () => {
       mediaRecorderUptimeOfLastStartResume = Date.now();
       mediaRecorderDurationAlreadyRecorded = 0;
       mediaRecorderIsRecording = true;
-    };
+    });
 
-    mediaRecorder.onstop = () => {
+    mediaRecorder.addEventListener('stop', () => {
       mediaRecorderDurationAlreadyRecorded = getAudioRecorderDurationMillis();
       mediaRecorderIsRecording = false;
 
       // Clears recording icon in Chrome tab
       stream.getTracks().forEach(track => track.stop());
-    };
+    });
 
     return { uri: null, status: await this.getAudioRecordingStatus() };
   },
@@ -285,8 +285,8 @@ export default {
       return { uri: null, status: await this.getAudioRecordingStatus() };
     }
 
-    const dataPromise = new Promise(
-      resolve => (mediaRecorder.ondataavailable = e => resolve(e.data))
+    const dataPromise = new Promise(resolve =>
+      mediaRecorder.addEventListener('dataavailable', e => resolve(e.data))
     );
 
     mediaRecorder.stop();
